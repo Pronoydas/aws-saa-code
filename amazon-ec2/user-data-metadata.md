@@ -40,18 +40,26 @@ This script installs a web server and uses instance metadata to retrieve informa
 #!/bin/bash
 
 # Update system and install httpd (Apache)
-yum update -y
-yum install -y httpd
+sudo yum update -y
+sudo yum install -y httpd
 
 # Start httpd service and enable it to start on boot
-systemctl start httpd
-systemctl enable httpd
+sudo systemctl start httpd
+sudo systemctl enable httpd
 
 # Fetch metadata using IMDSv2
-TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
-INSTANCE_ID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id)
-AMI_ID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/ami-id)
-INSTANCE_TYPE=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type)
+#TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+#INSTANCE_ID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id)
+#AMI_ID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/ami-id)
+#INSTANCE_TYPE=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type)
+
+# Fetch metadata using IMDSv1
+INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+AMI_ID=$(curl http://169.254.169.254/latest/meta-data/ami-id)
+INSTANCE_TYPE=$(curl http://169.254.169.254/latest/meta-data/instance-type)
+
+# Giving Permission
+sudo chmod 777 /var/www/html -R
 
 # Create a web page to display the metadata
 cat <<EOF > /var/www/html/index.html
