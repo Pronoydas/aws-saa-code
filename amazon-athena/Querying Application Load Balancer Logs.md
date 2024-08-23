@@ -2,17 +2,17 @@
 
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::127311923021:root"
-      },
-      "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::bucket-name/AWSLogs/*"
-    }
-  ]
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "logdelivery.elasticloadbalancing.amazonaws.com"
+            },
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::accesslogdemoserver/AWSLogs/171463908026/*"
+        }
+    ]
 }
 ```
 
